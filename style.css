@@ -1,0 +1,681 @@
+body {
+  background: #111;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  color: #fff;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 65vw;
+  height: auto;
+  aspect-ratio: 4 / 3;   /* keeps proportion in horizontal mode */
+  perspective: 1200px;
+   user-select: none;
+}
+
+/* SLIDER */
+.slider {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+.slider-container.vertical{
+/*    aspect-ratio: 3 / 4; */
+   height: 70vh;
+  width: auto;
+}
+
+/* SLIDE */
+.slide {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #2a2a2a, #1b1b1b);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  font-size: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateZ(-200px) scale(0.7) rotateY(25deg);
+  transition: 0.6s ease;
+}
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-drag: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none; /* optional but improves drag smoothness */
+}
+.slide.active {
+  opacity: 1;
+  transform: translateZ(0) rotateY(0) scale(1.03);
+}
+
+/* HORIZONTAL NEIGHBOURS */
+.slide.left {
+  opacity: 0.85;
+  transform: translateX(-25%) translateZ(-110px) rotateY(20deg);
+
+}
+.slide.right {
+  opacity: 0.85;
+  transform: translateX(25%) translateZ(-110px) rotateY(-20deg);
+}
+
+/* VERTICAL NEIGHBOURS (Option A: stack up/down) */
+.slide.up {
+  opacity: 0.85;
+  transform: translateY(-120px) translateZ(-110px) rotateX(-20deg);
+}
+.slide.down {
+  opacity: 0.85;
+  transform: translateY(120px) translateZ(-110px) rotateX(20deg);
+}
+.progress-bar.hide {
+  display: none !important;
+}
+/* BUTTONS base */
+.btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(6px);
+  position: absolute;
+  border: none;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* HORIZONTAL: arrows left/right */
+.slider-container.horizontal .btn.prev {
+  top: 50%;
+  left: 70px;
+  transform: translateY(-50%);
+}
+.slider-container.horizontal .btn.next {
+  top: 50%;
+  right: 70px;
+  transform: translateY(-50%);
+}
+
+/* VERTICAL: arrows top/bottom */
+.slider-container.vertical .btn.prev {
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+}
+.slider-container.vertical .btn.next {
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+}
+
+/* -------------------------------------- */
+/*         INDICATORS (2 STYLES)          */
+/* -------------------------------------- */
+
+/* HORIZONTAL (default style) */
+.indicators.horizontal {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+}
+.indicators.horizontal .dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transition: 0.3s ease;
+}
+.indicators.horizontal .dot.active {
+  width: 28px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+/* VERTICAL INDICATORS (bars) */
+.indicators.vertical {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.indicators.vertical .dot {
+  width: 6px;
+  height: 26px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+.indicators.vertical .dot.active {
+  background: white;
+  height: 40px;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+  overflow: hidden;
+  border-radius: 999px;
+}
+.progress-bar span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: #fff;
+}
+.progress-bar.hide {
+  display: none;
+}
+
+/* -------------------------
+      THUMBNAILS STRIP
+--------------------------*/
+/* -------------------------
+      THUMBNAILS STRIP
+--------------------------*/
+
+.thumbnails {
+  position: absolute;
+  left: 0;
+  bottom: -70px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  z-index: 12;
+  width:max-width;
+}
+
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail.active {
+  opacity: 1;
+  outline: 2px solid #fff;
+  transform: scale(1.05);
+}
+/* Horizontal thumbnails */
+.thumbnails.horizontal {
+  position: absolute;
+  left: 50%;
+  bottom: -70px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  z-index: 12;
+}
+
+/* Vertical thumbnails */
+.thumbnails.vertical {
+  position: absolute;
+  top: 50%;
+  bottom:auto;
+  right: auto;        /* move it further outside */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 8px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  z-index: 20;
+}
+
+
+.thumbnail {
+  width: 50px;
+  height: 34px;
+  border-radius: 6px;
+  overflow: hidden;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.thumbnails.vertical .thumbnail {
+  width: 60px;
+  height: 40px;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail.active {
+  opacity: 1;
+  outline: 2px solid #fff;
+  transform: scale(1.05);
+}
+/* counter */
+
+/* Counter container */
+/* Container of circular counter */
+.counter-progress {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: conic-gradient(#fff 0deg, rgba(255,255,255,0.2) 0deg);
+  transition: background 0.2s linear;
+  z-index: 99;
+}
+
+/* Inner circle */
+.counter-inner {
+  width: 36px;
+  height: 36px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.counter-inner span {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Hide when attribute disabled */
+.counter-progress.hidden {
+  display: none;
+}
+
+/* -----------------------------
+       FADE SLIDER STYLE
+----------------------------- */
+
+.style-fadeslider .slide {
+  opacity: 0 !important;
+  transform: none !important;
+  transition: opacity 0.6s ease-in-out !important;
+  z-index: 1;
+}
+
+.style-fadeslider .slide.active {
+  opacity: 1 !important;
+  z-index: 2;
+}
+
+/* -----------------------------------------
+        PERFECT 2D SLIDER (Bootstrap-like)
+------------------------------------------*/
+/* All slides on right side by default */
+.style-2dslider .slider{
+  overflow:hidden;
+}
+.style-2dslider .slide {
+  transform: translateX(100%) !important;
+}
+.style-2dslider .slide.left,.style-2dslider .slide.right{
+  opacity:0;
+}
+.style-2dslider .slide.active {
+  transform: translateX(0) !important;
+}
+
+/* Only previous slide goes LEFT */
+.style-2dslider.horizontal .slide.left {
+  transform: translateX(-100%) !important;
+}
+
+/* Next slide goes RIGHT */
+.style-2dslider.horizontal .slide.right {
+  transform: translateX(100%) !important;
+}
+
+/* -----------------------------------------
+        FULLSCREEN FADE SLIDER
+------------------------------------------*/
+.style-fullslider {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100% !important;
+  aspect-ratio: unset !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background: #000;
+}
+
+/* Slider takes whole screen */
+.style-fullslider .slider {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* All slides overlapped, fading only */
+.style-fullslider .slide {
+  opacity: 0 !important;
+  transform: none !important;
+  transition: opacity 0.8s ease-in-out !important;
+  position: absolute;
+  inset: 0;
+}
+
+/* active slide */
+.style-fullslider .slide.active {
+  opacity: 1 !important;
+}
+
+/* Allow thumbnails to display inside fullscreen mode */
+.style-fullslider .thumbnails.horizontal {
+  bottom: 30px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+.style-fullslider .thumbnails.vertical {
+  right: 30px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  max-width:max-content;
+}
+/* Indicators repositioned for fullscreen */
+.style-fullslider .indicators.horizontal {
+  bottom: 40px;
+}
+.style-fullslider .indicators.vertical {
+  right: 20px;
+}
+/* -----------------------------------------
+        LOGO SLIDER (marquee loop)
+------------------------------------------*/
+.style-logoslider {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden !important;
+  position: relative;
+  aspect-ratio: unset !important;
+}
+
+/* Override container constraints for logoslider */
+.style-logoslider.slider-container {
+  max-width: 100% !important;
+  aspect-ratio: unset !important;
+}
+
+.style-logoslider .slider {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: unset;
+}
+
+/* Horizontal slider - auto height for multiple rows */
+.style-logoslider.horizontal .slider {
+  height: auto;
+  min-height: 150px;
+}
+
+/* Vertical slider - full height */
+.style-logoslider.vertical .slider {
+  height: 100%;
+}
+
+.style-logoslider .slide {
+  position: relative;
+  opacity: 1 !important;
+  transform: none !important;
+  width: auto !important;
+  height: 100%;
+  min-width: 120px;
+  transition: none !important;
+  background: none;
+  box-shadow: none;
+}
+
+.style-logoslider .slide img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Keyframes will have dynamic duration controlled by JS */
+@keyframes logosLoop {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Hide all things not needed in logo slider */
+.style-logoslider .btn,
+.style-logoslider .progress-bar,
+.style-logoslider .counter-progress,
+.style-logoslider .indicators,
+.style-logoslider .thumbnails {
+  display: none !important;
+}
+
+/* Vertical logoslider takes full height */
+.style-logoslider.vertical {
+  height: 100vh !important;
+  width: auto;
+  max-width: 100%;
+}
+
+/* Horizontal logoslider - responsive height based on rows */
+.style-logoslider.horizontal {
+  height: auto;
+  min-height: 150px;
+  width: 100%;
+  max-height: 100vh;
+}
+
+
+/* Wrapper for rows/columns */
+.logo-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Horizontal track - auto height to fit all rows */
+.style-logoslider.horizontal .logo-track {
+  height: auto;
+}
+
+/* Vertical track - full height */
+.style-logoslider.vertical .logo-track {
+  height: 100%;
+}
+
+/* Horizontal orientation → multiple rows stacked vertically */
+.style-logoslider.horizontal .logo-track {
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Vertical orientation → multiple columns side by side */
+.style-logoslider.vertical .logo-track {
+  flex-direction: row;
+  gap: 20px;
+}
+
+/* Row/column strip (marquee element) */
+.logo-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 40px;
+}
+
+/* Horizontal row */
+.logo-row {
+  width: max-content;
+  height: auto;
+  min-height: 120px;
+  max-height: 200px;
+  flex-shrink: 0;
+}
+
+/* Responsive row height - adjust based on number of rows */
+.style-logoslider.horizontal .logo-row {
+  height: auto;
+}
+
+/* When multiple rows, make them share space evenly */
+.style-logoslider.horizontal .logo-track {
+  height: auto;
+  min-height: 150px;
+}
+
+/* Vertical column */
+.logo-col {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  width: 100%;
+  max-width: 150px;
+  gap: 40px;
+}
+
+/* Slide inside marquee */
+.logo-row .slide,
+.logo-col .slide {
+  opacity: 1 !important;
+  transform: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  position: relative !important;
+  flex-shrink: 0;
+}
+
+/* Horizontal slides */
+.logo-row .slide {
+  min-width: 120px;
+  height: auto;
+}
+
+/* Vertical slides */
+.logo-col .slide {
+  width: 100%;
+  height: auto;
+  /* max-height: 200px; */
+}
+
+/* Images */
+.logo-row .slide img {
+  width: auto;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+}
+
+/* Responsive image sizing for rows */
+@media (max-width: 768px) {
+  .logo-row .slide img {
+    max-height: 150px;
+  }
+  .logo-row {
+    min-height: 100px;
+    max-height: 150px;
+  }
+  .style-logoslider.horizontal .logo-track {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-row .slide img {
+    max-height: 120px;
+  }
+  .logo-row {
+    min-height: 80px;
+    max-height: 120px;
+  }
+  .logo-row {
+    gap: 20px;
+  }
+}
+
+.logo-col .slide img {
+  width: 100%;
+  height: auto;
+  /* max-height: 200px; */
+  object-fit: contain;
+}
+
+/* marquee keyframes */
+@keyframes marqueeLeft { 
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marqueeRight { 
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes marqueeUp { 
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+@keyframes marqueeDown { 
+  from { transform: translateY(-50%); }
+  to   { transform: translateY(0); }
+}
+
+/* Hide slider controls for logoslider */
+.style-logoslider .btn,
+.style-logoslider .progress-bar,
+.style-logoslider .counter-progress,
+.style-logoslider .indicators,
+.style-logoslider .thumbnails {
+  display: none !important;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="slider-container"
+  data-autoplay="true"
+  data-speed="20000"
+  data-arrows="true"
+  data-indicators="true"
+  data-indicator-position="horizontal"   
+  data-orientation="horizontal"
+  data-drag="true"
+  data-touch="true"
+  data-thumbnails="true"
+  data-thumbnail-orientation="horizontal"
+  data-progressbar="true"
+  data-counter-progressbar="true"
+  data-style="logoslider"
+  data-rows="2"
+  data-columns="3"
+  data-direction="alternate"
+  >
+  
+<!-- data-style : 3dslider/fadeslider/2dslider/fullslider/logoslider -->
+<!-- horizontal or "vertical" -->
+<!--    data-orientation="horizontal" works when slider style - 3dslider -->
+<!-- data-direction="alternate" can be "same" or "alternate" -->
+
+
+<div class="slider">
+ <div class="slide active">
+   <img src="https://picsum.photos/id/237/200/300" />
+ </div>
+ <div class="slide">
+   <img src="https://picsum.photos/seed/picsum/200/200" />
+ </div>
+ <div class="slide">
+   <img src="https://picsum.photos/250/300?grayscale" />
+ </div>
+ <div class="slide">
+   <img src="https://picsum.photos/500/350?grayscale" />
+ </div>
+ <div class="slide">
+   <img src="https://picsum.photos/200/100?grayscale" />
+ </div>
+ <div class="slide">
+   <img src="https://picsum.photos/100/300" />
+ </div>
+</div>
+
+<button class="btn prev">⟨</button>
+<button class="btn next">⟩</button>
+
+<div class="indicators"></div>
+
+
+<div class="counter-progress" id="counterProgress">
+<div class="counter-inner">
+ <span id="counterNumber">1</span>
+</div>
+</div>
+
+
+<!-- Autoplay Progress Bar -->
+<div class="progress-bar"><span></span></div>
+<div class="thumbnails"></div>
+</div>
+
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
