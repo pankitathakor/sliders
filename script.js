@@ -219,10 +219,13 @@ if (sliderStyle === "logoslider") {
 
         if (!isVertical) {
           // Horizontal: left (default) or right (reverse)
-          groupEl.style.animationName = reverse ? "marqueeRight" : "marqueeLeft";
+          // groupEl.style.animationName = reverse ? "marqueeRight" : "marqueeLeft";
+          groupEl.style.animation = `${reverse ? "marqueeRight" : "marqueeLeft"} ${speed}ms linear infinite`;
+
         } else {
           // Vertical: up (bottom to top, default) or down (top to bottom, reverse)
-          groupEl.style.animationName = reverse ? "marqueeDown" : "marqueeUp";
+          // groupEl.style.animationName = reverse ? "marqueeDown" : "marqueeUp";
+          groupEl.style.animation = `${reverse ? "marqueeDown" : "marqueeUp"} ${speed}ms linear infinite`;
         }
 
         groupEl.style.animationDuration = speed + "ms";

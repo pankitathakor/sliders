@@ -213,7 +213,7 @@ body {
   backdrop-filter: blur(6px);
   border-radius: 12px;
   z-index: 12;
-  width:max-width;
+  width:max-content;
 }
 
 
@@ -583,7 +583,9 @@ body {
   max-width: 150px;
   gap: 40px;
 }
-
+.logo-row, .logo-col {
+  will-change: transform;
+}
 /* Slide inside marquee */
 .logo-row .slide,
 .logo-col .slide {
